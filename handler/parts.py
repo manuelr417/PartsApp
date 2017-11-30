@@ -43,11 +43,11 @@ class PartHandler:
         material = args.get("material")
         dao = PartsDAO()
         parts_list = []
-        if color and material:
+        if (len(args) == 2) and color and material:
             parts_list = dao.getPartsByColorAndMaterial(color, material)
-        elif color:
+        elif (len(args) == 1) and color:
             parts_list = dao.getPartsByColor(color)
-        elif material:
+        elif (len(args) == 1) and material:
             parts_list = dao.getPartsByMaterial(material)
         else:
             return jsonify(Error = "Malformed query string"), 400
@@ -59,12 +59,11 @@ class PartHandler:
 
     def getSuppliersByPartId(self, pid):
         dao = PartsDAO()
-        suppliers_list = dao.getSuppliersByPartId(pid)
-        if not suppliers_list:
+        if not dao.getPartById(pid):
             return jsonify(Error="Part Not Found"), 404
-        else:
-            result_list = []
-            for row in suppliers_list:
-                result = self.build_supplier_dict(row)
-                result_list.append(result)
-            return jsonify(Suppliers=result_list)
+        suppliers_list = dao.getSuppliersByPartId(pid)
+        result_list = []
+        for row in suppliers_list:
+            result = self.build_supplier_dict(row)
+            result_list.append(result)
+        return jsonify(Suppliers=result_list)

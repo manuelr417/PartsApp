@@ -44,15 +44,14 @@ class SupplierHandler:
 
     def getPartsBySupplierId(self, sid):
         dao = SupplierDAO()
-        parts_list = dao.getPartsBySupplierId(sid)
-        if not parts_list:
+        if not dao.getSupplierById(sid):
             return jsonify(Error="Supplier Not Found"), 404
-        else:
-            result_list = []
-            for row in parts_list:
-                result = self.build_part_dict(row)
-                result_list.append(result)
-            return jsonify(Parts=result_list)
+        parts_list = dao.getPartsBySupplierId(sid)
+        result_list = []
+        for row in parts_list:
+            result = self.build_part_dict(row)
+            result_list.append(result)
+        return jsonify(PartsSupply=result_list)
 
     def searchSuppliers(self, args):
         if len(args) > 1:
