@@ -30,7 +30,7 @@ def getAllSuppliers():
     if not request.args:
         return SupplierHandler().getAllSuppliers()
     else:
-        return PartHandler().searchParts(request.args)
+        return SupplierHandler().searchSuppliers(request.args)
 
 @app.route('/PartApp/suppliers/<int:sid>')
 def getSupplierById(sid):

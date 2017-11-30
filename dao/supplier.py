@@ -33,3 +33,12 @@ class SupplierDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def getSuppliersByCity(self, city):
+        cursor = self.conn.cursor()
+        query = "select * from supplier where scity = %s;"
+        cursor.execute(query, (city,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

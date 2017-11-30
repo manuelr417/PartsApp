@@ -29,7 +29,7 @@ class SupplierHandler:
         for row in suppliers_list:
             result = self.build_supplier_dict(row)
             result_list.append(result)
-        return jsonify(records=result_list)
+        return jsonify(Suppliers=result_list)
 
     def getSupplierById(self, sid):
 
@@ -42,7 +42,6 @@ class SupplierHandler:
             part = self.build_supplier_dict(row)
         return jsonify(Part=part)
 
-    
     def getPartsBySupplierId(self, sid):
         dao = SupplierDAO()
         parts_list = dao.getPartsBySupplierId(sid)
@@ -54,3 +53,20 @@ class SupplierHandler:
                 result = self.build_part_dict(row)
                 result_list.append(result)
             return jsonify(Parts=result_list)
+
+    def searchSuppliers(self, args):
+        if len(args) > 1:
+            return jsonify(Error = "Malformed search string."), 400
+        else:
+            city = args.get("city")
+            if city:
+                dao = SupplierDAO()
+                supplier_list = dao.getSuppliersByCity(city)
+                result_list = []
+                for row in supplier_list:
+                    result = self.build_supplier_dict(row)
+                    result_list.append(row)
+                return jsonify(Suppliers=result_list)
+            else:
+                return jsonify(Error="Malformed search string."), 400
+
