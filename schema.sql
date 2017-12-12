@@ -9,3 +9,7 @@ create table supplier(sid serial primary key, sname varchar(10), scity varchar(1
 -- Supplies table
 create table supplies(pid integer references Parts(pid), sid integer references
 Supplier(sid), qty integer, primary key(pid, sid));
+
+-- PartSales table
+create table partsales(psaleid serial primary key, pid integer references Parts(pid),
+sid integer references Supplier(sid), sqty integer, sprice float, sdate Date);
