@@ -20,6 +20,15 @@ class PartHandler:
         result['sphone'] = row[3]
         return result
 
+    def build_part_attributes(self, pid, pname, pcolor, pmaterial, pprice):
+        result = {}
+        result['pid'] = pid
+        result['pname'] = pname
+        result['pmaterial'] = pcolor
+        result['pcolor'] = pmaterial
+        result['pprice'] = pprice
+        return result
+
     def getAllParts(self):
         dao = PartsDAO()
         parts_list = dao.getAllParts()
@@ -67,3 +76,46 @@ class PartHandler:
             result = self.build_supplier_dict(row)
             result_list.append(result)
         return jsonify(Suppliers=result_list)
+
+    def insertPart(self, form):
+        if len(form) != 4:
+            return jsonify(Error = "Malformed post request"), 400
+        else:
+            pname = form['pname']
+            pprice = form['pprice']
+            pmaterial = form['pmaterial']
+            pcolor = form['pcolor']
+            if pcolor and pprice and pmaterial and pname:
+                dao = PartsDAO()
+                pid = dao.insert(pname, pcolor, pmaterial, pprice)
+                result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
+                return jsonify(Part=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def deletePart(self, pid):
+        dao = PartsDAO()
+        if not dao.getPartById(pid):
+            return jsonify(Error = "Part not found."), 404
+        else:
+            dao.delete(pid)
+            return jsonify(DeleteStatus = "OK"), 200
+
+    def updatePart(self, pid, form):
+        dao = PartsDAO()
+        if not dao.getPartById(pid):
+            return jsonify(Error = "Part not found."), 404
+        else:
+            if len(form) != 4:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                pname = form['pname']
+                pprice = form['pprice']
+                pmaterial = form['pmaterial']
+                pcolor = form['pcolor']
+                if pcolor and pprice and pmaterial and pname:
+                    dao.update(pid, pname, pcolor, pmaterial, pprice)
+                    result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
+                    return jsonify(Part=result), 201
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400

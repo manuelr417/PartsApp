@@ -10,16 +10,26 @@ app = Flask(__name__)
 def greeting():
     return 'Hello, this is the parts DB App!'
 
-@app.route('/PartApp/parts')
+@app.route('/PartApp/parts', methods=['GET', 'POST'])
 def getAllParts():
-    if not request.args:
-        return PartHandler().getAllParts()
+    if request.method == 'POST':
+        return PartHandler().insertPart(request.form)
     else:
-        return PartHandler().searchParts(request.args)
+        if not request.args:
+            return PartHandler().getAllParts()
+        else:
+            return PartHandler().searchParts(request.args)
 
-@app.route('/PartApp/parts/<int:pid>')
+@app.route('/PartApp/parts/<int:pid>', methods=['GET', 'PUT', 'DELETE'])
 def getPartById(pid):
-    return PartHandler().getPartById(pid)
+    if request.method == 'GET':
+        return PartHandler().getPartById(pid)
+    elif request.method == 'PUT':
+        return PartHandler().updatePart(pid, request.form)
+    elif request.method == 'DELETE':
+        return PartHandler().deletePart(pid)
+    else:
+        return jsonify(Error="Method not allowerd."), 405
 
 @app.route('/PartApp/parts/<int:pid>/suppliers')
 def getSuppliersByPartId(pid):

@@ -59,3 +59,26 @@ class PartsDAO:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, pname, pcolor, pmaterial, pprice):
+        cursor = self.conn.cursor()
+        query = "insert into parts(pname, pcolor, pmaterial, pprice) values (%s, %s, %s, %s) returning pid;"
+        cursor.execute(query, (pname, pcolor, pmaterial, pprice,))
+        pid = cursor.fetchone()[0]
+        self.conn.commit()
+        return pid
+
+    def delete(self, pid):
+        cursor = self.conn.cursor()
+        query = "delete from parts where pid = %s;"
+        cursor.execute(query, (pid,))
+        self.conn.commit()
+        return pid
+
+    def update(self, pid, pname, pcolor, pmaterial, pprice):
+        cursor = self.conn.cursor()
+        query = "update parts set pname = %s, pcolor = %s, pmaterial = %s, pprice = %s where pid = %s;"
+        cursor.execute(query, (pname, pcolor, pmaterial, pprice, pid,))
+        self.conn.commit()
+        return pid
+
