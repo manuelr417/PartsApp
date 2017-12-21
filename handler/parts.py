@@ -116,6 +116,6 @@ class PartHandler:
                 if pcolor and pprice and pmaterial and pname:
                     dao.update(pid, pname, pcolor, pmaterial, pprice)
                     result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
-                    return jsonify(Part=result), 201
+                    return jsonify(Part=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400

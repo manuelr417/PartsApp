@@ -29,22 +29,34 @@ def getPartById(pid):
     elif request.method == 'DELETE':
         return PartHandler().deletePart(pid)
     else:
-        return jsonify(Error="Method not allowerd."), 405
+        return jsonify(Error="Method not allowed."), 405
 
 @app.route('/PartApp/parts/<int:pid>/suppliers')
 def getSuppliersByPartId(pid):
     return PartHandler().getSuppliersByPartId(pid)
 
-@app.route('/PartApp/suppliers')
+@app.route('/PartApp/suppliers', methods=['GET', 'POST'])
 def getAllSuppliers():
-    if not request.args:
-        return SupplierHandler().getAllSuppliers()
-    else:
-        return SupplierHandler().searchSuppliers(request.args)
+    if request.method == 'POST':
+        return SupplierHandler().insertSupplier(request.form)
+    else :
+        if not request.args:
+            return SupplierHandler().getAllSuppliers()
+        else:
+            return SupplierHandler().searchSuppliers(request.args)
 
-@app.route('/PartApp/suppliers/<int:sid>')
+@app.route('/PartApp/suppliers/<int:sid>',
+           methods=['GET', 'PUT', 'DELETE'])
 def getSupplierById(sid):
-    return SupplierHandler().getSupplierById(sid)
+    if request.method == 'GET':
+        return SupplierHandler().getSupplierById(sid)
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
 
 @app.route('/PartApp/suppliers/<int:sid>/parts')
 def getPartsBySuplierId(sid):

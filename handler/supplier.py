@@ -69,3 +69,23 @@ class SupplierHandler:
             else:
                 return jsonify(Error="Malformed search string."), 400
 
+    def insertSupplier(self, form):
+        if form and len(form) == 3:
+            sname = form['sname']
+            scity = form['scity']
+            sphone = form['sphone']
+            if sname and scity and sphone:
+                dao = SupplierDAO()
+                sid = dao.insert(sname, scity, sphone)
+                result = {}
+                result["sid"] = sid
+                result["sname"] = sname
+                result["scity"] = scity
+                result["sphone"] = sphone
+                return jsonify(Supplier=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+
