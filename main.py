@@ -3,7 +3,7 @@ from handler.parts import PartHandler
 from handler.supplier import SupplierHandler
 
 
-
+# Activate
 app = Flask(__name__)
 
 @app.route('/')
