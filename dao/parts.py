@@ -10,7 +10,7 @@ class PartsDAO:
 
     def getAllParts(self):
         cursor = self.conn.cursor()
-        query = "select * from parts;"
+        query = "select pid, pname, pmaterial, pcolor, pprice from parts;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -19,7 +19,7 @@ class PartsDAO:
 
     def getPartById(self, pid):
         cursor = self.conn.cursor()
-        query = "select * from parts where pid = %s;"
+        query = "select pid, pname, pmaterial, pcolor, pprice from parts where pid = %s;"
         cursor.execute(query, (pid,))
         result = cursor.fetchone()
         return result
