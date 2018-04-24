@@ -1,7 +1,7 @@
 #Databse configuration information
 
 pg_config = {
-    'user' : 'appusr',
-    'passwd' : 'appusr1',
-    'dbname' : 'appdb'
+    'user' : 'manuel',
+    'passwd' : 'icom5016',
+    'dbname' : 'icom5016'
 }
