@@ -82,3 +82,7 @@ class PartsDAO:
         self.conn.commit()
         return pid
 
+    def getCountByPartId(self):
+        cursor = self.conn.cursor()
+        query = "select pid, pname, count(*) from parts group by pid, pname"
+

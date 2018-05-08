@@ -119,3 +119,9 @@ class PartHandler:
                     return jsonify(Part=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
+
+    def getCountByPartId(self):
+        dao = PartsDAO()
+        result = dao.getCountByPartId()
+
+

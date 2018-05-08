@@ -67,5 +67,9 @@ def getSupplierById(sid):
 def getPartsBySuplierId(sid):
     return SupplierHandler().getPartsBySupplierId(sid)
 
+@app.route('/PartApp/parts/countbypartid')
+def getCountByPartId():
+    return PartHandler().getCountByPartId()
+
 if __name__ == '__main__':
     app.run()
