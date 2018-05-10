@@ -84,7 +84,7 @@ class PartsDAO:
 
     def getCountByPartId(self):
         cursor = self.conn.cursor()
-        query = "select pid, pname, count(*) from parts group by pid, pname order by pname;"
+        query = "select pid, pname, sum(stock) from parts natural inner join supplies group by pid, pname order by pname;"
         cursor.execute(query)
         result = []
         for row in cursor:
