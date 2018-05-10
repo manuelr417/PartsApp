@@ -120,8 +120,22 @@ class PartHandler:
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
+    def build_part_counts(self, part_counts):
+        result = []
+        #print(part_counts)
+        for P in part_counts:
+            D = {}
+            D['id'] = P[0]
+            D['name'] = P[1]
+            D['count'] = P[2]
+            result.append(D)
+        return result
+
     def getCountByPartId(self):
         dao = PartsDAO()
         result = dao.getCountByPartId()
+        #print(self.build_part_counts(result))
+        return jsonify(PartCounts = self.build_part_counts(result)), 200
+
 
 
