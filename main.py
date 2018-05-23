@@ -18,7 +18,11 @@ def greeting():
 @app.route('/PartApp/parts', methods=['GET', 'POST'])
 def getAllParts():
     if request.method == 'POST':
-        return PartHandler().insertPart(request.form)
+        # cambie a request.json pq el form no estaba bregando
+        # parece q estaba poseido por satanas ...
+        # DEBUG a ver q trae el json q manda el cliente con la nueva pieza
+        print("REQUEST: ", request.json)
+        return PartHandler().insertPartJson(request.json)
     else:
         if not request.args:
             return PartHandler().getAllParts()

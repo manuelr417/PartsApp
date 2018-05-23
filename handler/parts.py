@@ -78,6 +78,7 @@ class PartHandler:
         return jsonify(Suppliers=result_list)
 
     def insertPart(self, form):
+        print("form: ", form)
         if len(form) != 4:
             return jsonify(Error = "Malformed post request"), 400
         else:
@@ -92,6 +93,19 @@ class PartHandler:
                 return jsonify(Part=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def insertPartJson(self, json):
+        pname = json['pname']
+        pprice = json['pprice']
+        pmaterial = json['pmaterial']
+        pcolor = json['pcolor']
+        if pcolor and pprice and pmaterial and pname:
+            dao = PartsDAO()
+            pid = dao.insert(pname, pcolor, pmaterial, pprice)
+            result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
+            return jsonify(Part=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
     def deletePart(self, pid):
         dao = PartsDAO()
